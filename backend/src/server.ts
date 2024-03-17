@@ -108,10 +108,10 @@ io.on("connection", (socket: socketio.Socket) => {
     userManager.matchUser(user);
   });
   socket.on("join-room", (roomId:string, peerId:string) => {
-    console.log("Peer 1",peerId);
-    console.log("Room ",roomId)
     socket.join(roomId);
     socket.to(roomId).emit('user-connected', peerId);
+    console.log("Peer: ",peerId);
+    console.log(roomId);
   })
   socket.on("disconnect", (reason) => {
     console.log(reason);
