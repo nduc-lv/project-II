@@ -5,6 +5,8 @@ import { Button } from 'antd';
 import socket from "./utils/socket/socketIndex";
 import { useRouter } from "next/navigation";
 import {v4} from "uuid";
+import { useContext } from "react";
+import { UserContext} from "./context/UserContext";
 interface Interests{
 
 }
@@ -13,10 +15,14 @@ interface Offer{
   interests: Interests
 }
 export default function Home() {
+  // check if already in a room
   const router = useRouter();
+  const {userId, setUserId, interests, setInterests} = useContext(UserContext);
   const match = () => {
     const id = v4();
-    const interests = {};
+    setUserId(id);
+    console.log(userId);
+    localStorage.setItem("userId", id);
     const offer: Offer = {
       id: id,
       interests,
@@ -136,8 +142,9 @@ export default function Home() {
     //     </a>
     //   </div>
     // </main>
-    <div className="">
-      <Button type="primary" onClick={match}> Match Now</Button>
-    </div>
+    
+      <div className="">
+        <Button type="primary" onClick={match}> Match Now</Button>
+      </div>
   );
 }

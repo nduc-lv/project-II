@@ -2,96 +2,50 @@
 import { useSearchParams } from "next/navigation";
 import socket from "../utils/socket/socketIndex";
 import Peer from "peerjs";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext} from "react";
 import { useRouter } from "next/navigation";
 import ReactPlayer from "react-player";
 import { useState } from "react"
 import { Button } from "antd";
 import { v4 } from "uuid";
-
-
+import { RoomContext, RoomProvider } from "../context/RoomContext";
+import { UserContext, UserProvider } from "../context/UserContext";
 // get peer Id
 const roomId = localStorage.getItem("roomId");
+const userId = localStorage.getItem("userId");
 // const peer = new Peer(undefined, {host:"/", port: "9000"});
 // const id = v4();
-let check = 1;
+if (roomId){
+    socket.emit("join-room", roomId, userId);
+}
+
 export default function VideoCall(){
-    const [myPeer, setMyPeer] = useState<Peer>();
-    const [myStream, setMyStream] = useState<MediaStream>();
-    const router = useRouter();
-    if (!localStorage.getItem("roomId")){
-        router.push("/");
-    }
-    const myvideo = useRef();
-    const peervideo = useRef(null);
+    const myvideo = useRef<HTMLVideoElement>();
+    const peervideo = useRef<HTMLVideoElement>();
+    const {myStream, peerStream} = useContext(RoomContext);
+    const {userId} = useContext(UserContext);
     useEffect(() => {
-        const peer = new Peer( undefined, {host:"/", port: "9000"});
-        peer.on("open", (id) => {
-            localStorage.setItem("myId", id); 
-        })
-        setMyPeer(peer);
-        navigator.mediaDevices.getUserMedia({video: true, audio:true})
-        .then((stream: MediaStream) => {
-            setMyStream(stream);
-            addVideoStream(myvideo.current, stream);
-        });
-    }, []);
-
-    useEffect(() => {
-        if (!myPeer){
-            return;
+        // add stream to media
+        if (myStream){
+            addStream(myvideo.current, myStream);
         }
-        if (!myStream){
-            return;
+        if (peerStream){
+            addStream(peervideo.current, peerStream);
         }
         
-        socket.on("user-connected", (peerId) => {
-            console.log("this guy call", peerId);
-            const call = myPeer.call(peerId, myStream);
-            call.on("stream", (userStream) => {
-                addVideoStream(peervideo.current, userStream)
-            })
-            call.on("close", () => {
-                peervideo.current.remove();
-            })
-        })
-        if (check == 1){
-            const myId = localStorage.getItem("myId")
-            console.log(myId);
-            if (myId){
-                socket.emit("join-room", roomId, myId);
-                check = 2;
-            }
-        }
-        myPeer.on("call", (call) => {
-            console.log("this guy answer")
-            call.answer(myStream);
-            call.on("stream", (userStream) => {
-                addVideoStream(peervideo.current, userStream)
-            })
-            call.on("close", () => {
-                peervideo.current.remove();
-            })
-        })
-        return () => {
-            socket.off("user-connected")
-        }
-
-        
-    }, [myPeer, myStream]);
-
-    const addVideoStream = (video, stream) => {
-        video.srcObject = stream
+    }, [myStream, peerStream]);
+    const addStream = (video:HTMLVideoElement, stream:MediaStream) => {
+        video.srcObject = stream;
         video.addEventListener('loadedmetadata', () => {
-        video.play()
-  });
+            video.play()
+        })
     }
     return(
-        <>
+    <>
             <video ref={myvideo} style={{
                 width: "500px", height: "500px" }} muted={true}></video>
             <video ref={peervideo} style={{
                 width: "500px", height: "500px" }} id="peerVideo"></video>
-        </>
+    </>
     )
 }
