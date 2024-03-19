@@ -19,14 +19,18 @@ const userId = localStorage.getItem("userId");
 // const peer = new Peer(undefined, {host:"/", port: "9000"});
 // const id = v4();
 if (roomId){
-    socket.emit("join-room", roomId, userId);
-}
+     socket.emit("join-room", roomId, userId);
+ }
 
 export default function VideoCall(){
     const myvideo = useRef<HTMLVideoElement>();
     const peervideo = useRef<HTMLVideoElement>();
-    const {myStream, peerStream, toggleMute} = useContext(RoomContext);
-    const {userId} = useContext(UserContext);
+    const {myStream, peerStream, toggleCamera} = useContext(RoomContext);
+    // const {userId} = useContext(UserContext);
+    // const {roomId} = useContext(RoomContext);
+    // if (roomId) {
+    //     socket.emit("join-room", roomId, userId);
+    // }
     const handleCam = (e: Event) => {
         e.preventDefault();
         const videoTrack = myStream.getVideoTracks()[0];
@@ -53,7 +57,7 @@ export default function VideoCall(){
             </VideosCanva>
             
             <div className="absolute top-[90%] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <Controls handleCall={()=>{}} handleCam={toggleMute} handleMic={handleMic} width={"2rem"} height={"2rem"}></Controls>
+                <Controls handleCall={()=>{}} handleCam={toggleCamera} handleMic={handleMic} width={"2rem"} height={"2rem"}></Controls>
             </div>
             
             

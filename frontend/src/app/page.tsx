@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import {v4} from "uuid";
 import { useContext } from "react";
 import { UserContext} from "./context/UserContext";
+import { RoomContext } from "./context/RoomContext";
 interface Interests{
 
 }
@@ -18,6 +19,7 @@ export default function Home() {
   // check if already in a room
   const router = useRouter();
   const {userId, setUserId, interests, setInterests} = useContext(UserContext);
+  const {setRoomId} = useContext(RoomContext);
   const match = () => {
     const id = v4();
     setUserId(id);
@@ -30,6 +32,7 @@ export default function Home() {
     socket.emit("match-user", offer);
     // change to room id
     socket.on("found-peer", (roomId:string) => {
+      setRoomId(roomId);
       localStorage.setItem("roomId", roomId);
       router.push("/videoCall");
     });

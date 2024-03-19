@@ -37,6 +37,17 @@ export class UserManager{
             this.waitlist.push(user);
         }
     }
-
+    removeUser(socket: Socket){
+        this.userList = this.userList.filter((eachUser) => {
+            if (eachUser.socket.id != socket.id){
+                return eachUser;
+            }
+        })
+        this.waitlist = this.waitlist.filter((each) => {
+            if (each.socket.id != socket.id){
+                return each;
+            }
+        })
+    }
     // need functions to communicate to users in the room
 }

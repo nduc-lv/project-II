@@ -114,7 +114,8 @@ io.on("connection", (socket: socketio.Socket) => {
     console.log(roomId);
   })
   socket.on("disconnect", (reason) => {
-    console.log(reason);
+    userManager.removeUser(socket);
+    console.log(reason, socket.id);
   });
 })
 
