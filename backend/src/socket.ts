@@ -9,6 +9,8 @@ interface Offer{
 }
 
 const userManager = new UserManager();
+
+
 function addSocketListener(socket:Socket){
     // an offer come (want to match)
     socket.on("offer", (offer: Offer) => {
@@ -18,5 +20,6 @@ function addSocketListener(socket:Socket){
         }
         userManager.addUser(user);
         userManager.matchUser(user);
-    })
+    });
+    
 }

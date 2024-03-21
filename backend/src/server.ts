@@ -97,7 +97,9 @@ interface User{
 }
 io.on("connection", (socket: socketio.Socket) => {
   console.log("a new user connected", socket.id);
+  // add interest
   socket.on("match-user", (userName: string) => {
+    // get offer instead of userName
     console.log("an user wants to match", socket.id);
     const user: User = {
       socket,

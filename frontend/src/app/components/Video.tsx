@@ -10,13 +10,12 @@ export default function Video({stream, width, muted}: Props) {
     const ref = useRef<HTMLVideoElement>();
     useEffect(() => {
         if (ref.current && stream){
-            console.log("hi");
             ref.current.srcObject = stream;
             ref.current.addEventListener("loadeddata", () => {
                 ref.current?.play();
             })
         }
-    }, [stream])
+    }, [stream]);
     return (
         <>
              <div className="h-full">

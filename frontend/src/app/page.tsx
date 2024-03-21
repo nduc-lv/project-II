@@ -5,7 +5,7 @@ import { Button } from 'antd';
 import socket from "./utils/socket/socketIndex";
 import { useRouter } from "next/navigation";
 import {v4} from "uuid";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext} from "./context/UserContext";
 import { RoomContext } from "./context/RoomContext";
 interface Interests{
@@ -19,23 +19,30 @@ export default function Home() {
   // check if already in a room
   const router = useRouter();
   const {userId, setUserId, interests, setInterests} = useContext(UserContext);
-  const {setRoomId} = useContext(RoomContext);
+  const {setRoomId, setMyStream, roomId, myStream} = useContext(RoomContext);
+  useEffect(() => {
+    if (!userId){
+      return;
+    }
+    else{
+      const offer: Offer = {
+        id: userId,
+        interests,
+      }
+      console.log("my id", userId);
+      socket.emit("match-user", offer);
+      // change to room id
+      socket.on("found-peer", (roomId:string) => {
+        setRoomId(roomId);
+        router.push("/videoCall");
+      });
+    }
+    return () => {socket.off("found-peer")};
+  }, [userId])
+  // move match to another page
   const match = () => {
     const id = v4();
     setUserId(id);
-    console.log(userId);
-    localStorage.setItem("userId", id);
-    const offer: Offer = {
-      id: id,
-      interests,
-    }
-    socket.emit("match-user", offer);
-    // change to room id
-    socket.on("found-peer", (roomId:string) => {
-      setRoomId(roomId);
-      localStorage.setItem("roomId", roomId);
-      router.push("/videoCall");
-    });
   }
   return (
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">

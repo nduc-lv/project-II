@@ -1,6 +1,8 @@
 import { Socket } from "socket.io";
 import { RoomManger } from "@src/RoomManager";
 import { uuid } from "uuidv4";
+
+// add interests
 interface User{
     userName: string;
     socket: Socket;
