@@ -59,8 +59,8 @@ export const RoomProvider = ({children}) => {
                     track.stop();
                     myStream.removeTrack(track);
                 })
+                peer.destroy();
                 setMyPeer(null);
-                myPeer?.destroy();
                 checkInRoom.current = false; 
                 console.log("close")
                 router.push("/endCall");

@@ -15,6 +15,12 @@ const config: Config = {
       },
       inset: {
         '90%': '90%',
+      },
+      padding: {
+        '30%': '33%',
+      },
+      fontFamily: {
+        "roboto": ["Roboto", "Helvetica", "Arial", "sans-serif"]
       }
     },
   },

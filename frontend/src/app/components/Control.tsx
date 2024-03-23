@@ -9,16 +9,18 @@ import { RoomContext } from "../context/RoomContext";
 
 
 
-export default function Controls({handleCall, width, height}) {
+export default function Controls({handleCall, width, height}:any) {
     const [video,setVideo] = useState<boolean>(true);
     const [audio, setAudio] = useState<boolean>(true);
     const {call, myStream} = useContext(RoomContext);
-
+    const selectAudio = useRef<HTMLElement>()
+    const selectCamera = useRef<HTMLElement>()
     const toggleCamera = () => {
         if (video){
             // disable camera
             myStream?.getVideoTracks()[0].stop();
             myStream?.removeTrack(myStream.getVideoTracks()[0]);
+            selectCamera.current?.classList.add("z-10", "ring-2","ring-blue-700", "text-blue-700");
             setVideo(false);
         }
         else {
@@ -27,6 +29,7 @@ export default function Controls({handleCall, width, height}) {
             .then((stream) => {
                 myStream?.addTrack(stream.getVideoTracks()[0]);
                 call?.peerConnection.getSenders()[1].replaceTrack(stream.getVideoTracks()[0]);
+                selectCamera.current?.classList.remove("z-10", "ring-2","ring-blue-700", "text-blue-700");
                 setVideo(true);
             })
         }
@@ -35,10 +38,12 @@ export default function Controls({handleCall, width, height}) {
         if (audio){
             // disable mic
             myStream!.getAudioTracks()[0].enabled = false;
+            selectAudio.current?.classList.add("z-10", "ring-2","ring-blue-700", "text-blue-700");
             setAudio(false);
         }
         else{
             // enable mic
+            selectAudio.current?.classList.remove("z-10", "ring-2","ring-blue-700", "text-blue-700");
             myStream!.getAudioTracks()[0].enabled = true;
             setAudio(true);
         }
@@ -48,16 +53,19 @@ export default function Controls({handleCall, width, height}) {
     }
     return (
         <>
-         <div className="flex flex-row justify-center gap-2.5">
+         <div className="inline-flex rounded-md shadow-sm">
                 {/* Mic */}
-                <button onClick={toggleMic} className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                <button onClick={toggleMic} ref={selectAudio} className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white ">
                     <Mic height={height} width={width}></Mic>
+                    Mute
                 </button>
-                <button onClick={stopCall} className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                <button onClick={stopCall} className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
                     <PhoneHang height={height} width={width}></PhoneHang>
+                    End
                 </button>
-                <button onClick={toggleCamera} className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                <button onClick={toggleCamera} ref={selectCamera} className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
                     <Cam height={height} width={width}></Cam>
+                    Off
                 </button>
                 {/* Exit */}
                 {/* Cam */}
