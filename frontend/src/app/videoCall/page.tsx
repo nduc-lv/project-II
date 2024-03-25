@@ -36,7 +36,7 @@ export default function VideoCall(){
     //     socket.emit("join-room", roomId, userId);
     // }
     return(
-    <div className="relative">
+    <div className="relative bg-black">
             {/* <video ref={myvideo} style={{
                 width: "500px", height: "500px" }} muted={true}></video> */}
             {/* <Video stream={myStream} width={"100%"}></Video> */}

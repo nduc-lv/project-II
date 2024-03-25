@@ -7,6 +7,7 @@ export default function GenderForm({setGender, gender, dispatch, sexualInterest,
     const sexualGroups = ["Male", "Female", "Everyone"]
     const [selectedGender, setSelectedGender] = useState<number>(0);
     const [selectedInterest, setSelectedInterest] = useState<number>(0);
+    console.log(sexualInterest);
     const onClickGender = (e:any) => {
         if (!(e.target instanceof HTMLElement)) {
             console.log(e.target);
@@ -22,6 +23,7 @@ export default function GenderForm({setGender, gender, dispatch, sexualInterest,
             return;
         }
         const ele = e.target;
+        console.log(+ele.dataset.type);
         setSelectedInterest(+ele.dataset.type);
         setSexualInterest(+ele.dataset.type);
     }

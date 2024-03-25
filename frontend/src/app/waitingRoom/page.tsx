@@ -17,7 +17,7 @@ import Controls from "../components/Control";
 // const peer = new Peer(undefined, {host:"/", port: "9000"});
 // const id = v4();
 interface Offer{
-    id: string,
+    userId: string,
     profile: any
 }
 export default function VideoCall(){
@@ -30,9 +30,9 @@ export default function VideoCall(){
     const profile = {
         name: +localStorage.getItem("name"),
         gender: +localStorage.getItem("gender"),
-        sexualInterests: +localStorage.getItem("sexualInterests"),
+        sexualInterests: +localStorage.getItem("sexualInterest"),
         language: +localStorage.getItem("language"),
-        interests: JSON.parse(localStorage.getItem("interests"));
+        interests: JSON.parse(localStorage.getItem("interests"))
     }
     useEffect(() => {      
         if (count.current > 1){
@@ -42,16 +42,16 @@ export default function VideoCall(){
         const id = v4();
         setUserId(id);  
         const offer: Offer = {
-            id,
+            userId: id,
             profile
         }
         socket.on("found-peer", (roomId:string) => {
+            console.log("found peer");
             setRoomId(roomId);
             router.push("/videoCall");
         });
         socket.emit("match-user", offer);
         // change to room id
-    return () => {socket.off("found-peer")};
   }, [])
   // move match to another page
     return(

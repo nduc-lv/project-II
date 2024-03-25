@@ -24,6 +24,8 @@ import http from 'http';
 import * as socketio from "socket.io";
 import { Socket } from 'dgram';
 import { UserManager } from './UserManger';
+import { User } from './util/UserInterface';
+import { Offer } from './util/OfferInterface';
 // **** Variables **** //
 
 const app = express();
@@ -91,19 +93,16 @@ app.get('/users', (_: Request, res: Response) => {
   return res.sendFile('users.html', { root: viewsDir });
 });
 
-interface User{
-  userName: string;
-  socket: socketio.Socket
-}
+
 io.on("connection", (socket: socketio.Socket) => {
   console.log("a new user connected", socket.id);
   // add interest
-  socket.on("match-user", (userName: string) => {
+  socket.on("match-user", (offer: Offer) => {
     // get offer instead of userName
     console.log("an user wants to match", socket.id);
-    const user: User = {
-      socket,
-      userName
+    const user:User = {
+      ...offer,
+      socket: socket,
     }
     // need some condition to check
     userManager.addUser(user);
@@ -116,6 +115,7 @@ io.on("connection", (socket: socketio.Socket) => {
     console.log(roomId);
   })
   socket.on("disconnect", (reason) => {
+    // need to find which room this guy in
     userManager.removeUser(socket);
     console.log(reason, socket.id);
   });
