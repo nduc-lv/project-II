@@ -24,7 +24,7 @@ export default function LanguageForm({language, setLanguage, dispatch}:any){
                     </div>
                     
                     <div className="flex justify-center items center">
-                        <select onChange={getLanguage} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-4/5 p-2.5 my-12">
+                        <select onChange={getLanguage} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/4 p-2.5 my-12">
                                 <option value={-1} key={-1} selected>Choose a language</option>
                                 {languages.map((language, index) => {
                                     return(

@@ -21,8 +21,8 @@ export default function AgeForm({setAgeGroup, ageGroup, dispatch}:any){
                     <div>
                         <div className="text-4xl">Your age</div>
                     </div>
-                    <div>
-                        <select onChange={getAgeGroup} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-8">
+                    <div className="flex justify-center items-center">
+                        <select onChange={getAgeGroup} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/4 p-2.5 my-8">
                                 <option value={-1} key={-1} selected>Choose an age group</option>
                                 {groups.map((group, index) => {
                                     return(

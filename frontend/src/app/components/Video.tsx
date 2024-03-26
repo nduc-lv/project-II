@@ -4,9 +4,10 @@ interface Props{
     stream: MediaStream,
     width: string,
     muted: boolean,
+    height:string,
 }
 
-export default function Video({stream, width, muted}: Props) {
+export default function Video({stream, width, muted, height}: Props) {
     const ref = useRef<HTMLVideoElement>();
     useEffect(() => {
         if (ref.current && stream){
@@ -20,7 +21,7 @@ export default function Video({stream, width, muted}: Props) {
         <>
              <div className="h-full">
                     <div className="w-full h-full rounded-3xl shadow-2xl aspect-video bg-black overflow-hidden">
-                            <video width={width} muted={muted} style={{objectFit: "cover"}} height={"100%"} ref={ref}>
+                            <video width={width} muted={muted} style={{objectFit: "cover"}} ref={ref}>
                             </video>
                 </div>
             </div>

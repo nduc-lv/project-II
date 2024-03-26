@@ -119,6 +119,9 @@ io.on("connection", (socket: socketio.Socket) => {
     userManager.removeUser(socket);
     console.log(reason, socket.id);
   });
+  socket.on("share-video", (roomId:string) => {
+    socket.to(roomId).emit("sharing");
+  })
 })
 
 // **** Export default **** //
