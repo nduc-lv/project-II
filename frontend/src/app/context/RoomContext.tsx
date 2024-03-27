@@ -52,6 +52,7 @@ export const RoomProvider = ({children}) => {
             host: "localhost",
             port: 9000,
         });
+        // listen for other peer's calling
         peer.on("call", (call) => {
             callSave.current = call;
             call.on("close", () => {
@@ -86,10 +87,7 @@ export const RoomProvider = ({children}) => {
         // })
         // call peer
         // need be call first before emit
-        console.log("my id", userId),
-        localStorage.setItem("userId", userId)
         socket.on("user-connected", (peerId) => {
-            const userId = localStorage.getItem("userId");
             console.log("call");
             console.log("this guy");
             callSave.current = myPeer.call(peerId, myStream);

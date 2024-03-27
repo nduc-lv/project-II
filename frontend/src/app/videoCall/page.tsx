@@ -23,6 +23,7 @@ export default function VideoCall(){
     const myvideo = useRef<HTMLVideoElement>();
     const peervideo = useRef<HTMLVideoElement>();
     const {myStream, peerStream, roomId, checkInRoom} = useContext(RoomContext);
+    const router = useRouter();
     const {userId} = useContext(UserContext);
     const [share, setShare] = useState(false);
     useEffect(() => {

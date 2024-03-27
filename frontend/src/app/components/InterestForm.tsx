@@ -34,7 +34,7 @@ export default function InterestForm({selectedInterests, setInterests, dispatch}
         }
     }
     const next = (e:any) => {
-        if (interests.length == 5){
+        if (selectedInterests.length < 5){
             return;
         }
         console.log(selectedInterests);
@@ -60,13 +60,13 @@ export default function InterestForm({selectedInterests, setInterests, dispatch}
     }
     return (
         <>
-            <div className="flex flex-col h-full items-stretch justify-center items-center text-center px-[30%]">
+            <div className="flex flex-col h-full items-stretch justify-center items-center text-center px-52">
                 <div className="max-w-m p-8 bg-white border border-gray-200 rounded-lg shadow">
                     <div>
                         <div className="text-4xl">Your Interests</div>
                     </div>
                     <div>{selectedInterests.length} / 5</div>
-                    <div className="overflow-y-auto h-52 my-8 no-scrollbar">
+                    <div className="overflow-y-auto h-60 my-8 no-scrollbar">
                        {listOfInterests.map((interest, index) => {
                         return (
                             <>

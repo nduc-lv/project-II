@@ -1,10 +1,17 @@
 'use client'
 
+import {Select} from "antd";
 export default function AgeForm({setAgeGroup, ageGroup, dispatch}:any){
     const groups = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
-    const getAgeGroup = (e:any) => {
-        console.log(e.target.value)
-        setAgeGroup(e.target.value)
+    const options = groups.map((label, value) => {
+        return {
+            label,
+            value
+        }
+    })
+    options.unshift({label: "Choose an age group", value: -1});
+    const getAgeGroup = (value:any) => {
+        setAgeGroup(value);
     }
     const next = (e:any) => {
         if (ageGroup == -1){
@@ -22,16 +29,13 @@ export default function AgeForm({setAgeGroup, ageGroup, dispatch}:any){
                         <div className="text-4xl">Your age</div>
                     </div>
                     <div className="flex justify-center items-center">
-                        <select onChange={getAgeGroup} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/4 p-2.5 my-8">
-                                <option value={-1} key={-1} selected>Choose an age group</option>
-                                {groups.map((group, index) => {
-                                    return(
-                                        <>
-                                        <option value={index} key={index}>{group}</option>
-                                        </>
-                                    )
-                                })}
-                        </select>
+                    <Select
+                            size={"large"}
+                            defaultValue={-1}
+                            onChange={getAgeGroup}
+                            className="w-3/4 my-12"
+                            options={options}
+                        />
                     </div>
                     <div>
                     <button  onClick={next} className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Next</button>
